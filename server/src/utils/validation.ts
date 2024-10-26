@@ -2,14 +2,14 @@
  * Validating request body.
  * return { data, err }
  */
-function username(username: string | null | undefined): { username: string , err: null | string } {
-	if (!username || username.trim().length === 0) {
-		return { username : "", err: "Username must have value" };
+function email(email: string | null | undefined): { email: string , err: null | string } {
+	if (!email || email.trim().length === 0) {
+		return { email : "", err: "email must have value" };
 	}
-	if (username.split("@")?.length !== 2) {
-		return { username, err: "Username should be an email" };
+	if (email.split("@")?.length !== 2) {
+		return { email, err: "email should be an email" };
 	}
-	return { username, err: null };
+	return { email, err: null };
 }
 
 function password(password: string | null | undefined): { password: string , err: null | string } {
@@ -31,8 +31,10 @@ function name(name: string | null | undefined, { firstName = true }): { name: st
 	return { name, err: null };
 }
 
+
+
 export const userValidate = {
-	username,
+	email,
 	password,
 	name,
 }
