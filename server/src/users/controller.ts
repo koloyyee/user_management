@@ -5,82 +5,93 @@ import { checkSession } from "../utils/validation";
 import { userService } from "./service";
 
 interface IAuthRequest {
-	password: string;
-	email: string;
+  password: string;
+  email: string;
 }
 
 
 export const userRouter = express.Router();
 // root "/api/users"
 userRouter.route("/")
-	//get all users
-	.get(checkSession, async (_req, res) => {
-		const data = await userService.findAll();
-		res.send(data).status(200);
-	})
-	// create user
-	.post(async (req, res) => {
-		const doc = req.body as IUser;
-		const result = await userService.save(doc);
-		res.status(200).send({ message: "received", result });
-	})
+  //get all users
+  .get(checkSession, async (_req, res) => {
+    const data = await userService.findAll();
+    res.send(data).status(200);
+  })
+  // create user
+  .post(async (req, res) => {
+    const doc = req.body as IUser;
+    const result = await userService.save(doc);
+    res.status(200).send({ message: "received", result });
+  })
 
 
 
 // endpoint handles with "by id" path params.
 userRouter.route("/:id")
-	.get(checkSession, async (req, res) => {
-		const id = await req.params.id as string;
-		const oid = new ObjectId(id);
-		const user = await userService.find(oid)
-		console.log(user);
-		res.status(200).send(user);
-	})
-	.put(checkSession, async (req, res) => {
-		const oid = new ObjectId(req.params.id);
-		const result = await userService.update(oid, req.body);
-		if (result === null) {
-			res.status(500);
-			return;
-		}
-		res.status(200).send(result);
-	})
-	.delete(checkSession, async (req, res) => {
-		const oid = new ObjectId(req.params.id);
-		const result = await userService.del(oid);
-		if (result === null) {
-			res.status(500);
-			return;
-		}
-		res.status(200).send(result);
-	})
+  .get(checkSession, async (req, res) => {
+    const id = await req.params.id as string;
+    const oid = new ObjectId(id);
+    const user = await userService.find(oid)
+    res.status(200).send(user);
+  })
+  .put(checkSession, async (req, res) => {
+    const oid = new ObjectId(req.params.id);
+    const result = await userService.update(oid, req.body);
+    if (result === null) {
+      res.status(500);
+      return;
+    }
+    res.status(200).send(result);
+  })
+  .delete(checkSession, async (req, res) => {
+    const oid = new ObjectId(req.params.id);
+    const result = await userService.del(oid);
+    if (result === null) {
+      res.status(500);
+      return;
+    }
+    res.status(200).send(result);
+  })
 
 
 /**
  * Handle Authorization, session based authorization.
  */
 userRouter.route("/login").post(async (req, res) => {
-	// check credential
-	const body = await req.body as IAuthRequest;
-	const user = await userService.findByEmail(body.email);
-	if (user === null) {
-		res.status(404).send({ message: "User email not found." });
-	}
+  // check credential
 
-	const verified = await passwordEncoder.verify(body.password, user?.password ?? "");
-	if (!verified) {
-		res.status(401).send({ message: "Password or Email is incorrect." });
-		return;
-	}
-	res.status(200).json({ sessionID: req.sessionID });
+  const body = await req.body as IAuthRequest;
+  const user = await userService.findByEmail(body.email);
+  if (user === null) {
+    res.status(404).send({ message: "User email not found." });
+  }
+  const verified = await passwordEncoder.verify(body.password, user?.password ?? "");
+  if (!verified) {
+    res.status(401).send({ message: "Password or Email is incorrect." });
+    return;
+  }
+  delete user.password;
+
+  res.status(200).send({ user, sessionID: req.sessionID });
 })
 
 userRouter.route("/logout").post(async (req, res) => {
-	req.session.destroy((err) => {
-		if (err) {
-			return res.status(500).send({ message: "Failed to logout." });
-		}
-		return res.status(200).send({ message: "Logged out successfully." });
-	});
-
+  req.session.destroy((err) => {
+    if (err) {
+      return res.status(500).send({ message: "Failed to logout." });
+    }
+    return res.status(200).send({ message: "Logged out successfully." });
+  });
 })
+
+userRouter.route("/validate_session").post(async (req, res) => {
+  const feSession = req.body.sessionID;
+  if (!feSession || req.sessionID !== feSession) {
+    res.status(401).json({ valid: false, message: "session expired or invalid." });
+    return;
+  }
+
+  res.status(200).json({ valid: true, message: "session is valid" });
+
+});

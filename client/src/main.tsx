@@ -1,27 +1,32 @@
 import { StrictMode } from 'react';
 import { createRoot } from 'react-dom/client';
 import { createBrowserRouter, RouterProvider } from 'react-router-dom';
-import App from './App';
+import App, { action as appAction, loader as appLoader } from './App';
 import './index.css';
+import Login, { action as loginAction } from './routes/login';
+import { ErrorPage } from './error-page';
 
 
 const router = createBrowserRouter([
   {
-    path : "/",
+    path: "/",
     element: <App />,
-    errorElement: <h1> Oops! Not Found!</h1>
+    errorElement: <ErrorPage />,
+    action: appAction,
+    loader: appLoader,
   },
 
   {
-    path : "/login",
-    element: <h1> Login Page </h1>,
-    errorElement: <h1> Oops! Not Found!</h1>
+    path: "/login",
+    element: <Login />,
+    errorElement: <ErrorPage />,
+    action: loginAction,
   },
 
 ]);
 
 createRoot(document.getElementById('root')!).render(
   <StrictMode>
-    <RouterProvider router ={router} />
+    <RouterProvider router={router} />
   </StrictMode>,
 )
