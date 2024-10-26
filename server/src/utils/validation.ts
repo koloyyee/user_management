@@ -1,3 +1,5 @@
+import { NextFunction, Request, Response } from "express";
+
 /**
  * Validating request body.
  * return { data, err }
@@ -37,4 +39,16 @@ export const userValidate = {
 	email,
 	password,
 	name,
+}
+
+
+export function checkSession(req: Request, res: Response, next :NextFunction) {
+	//  the authroization made with "Bearer xxxxxxx", split by " " and extract the session Id.
+	const session = req.headers.authorization?.split(" ")[1];
+	if(req.sessionID === session) {
+		console.log(req.headers.authorization);
+		next();
+	} else {
+		res.status(401).send({ message : ""})
+	} 
 }

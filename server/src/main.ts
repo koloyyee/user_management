@@ -3,6 +3,8 @@ import 'dotenv/config';
 import express from 'express';
 
 import dotenv from "dotenv";
+import session from "express-session";
+import { v4 as uuidv4 } from 'uuid';
 import { userRouter } from "./users/controller";
 
 // get env variables
@@ -16,7 +18,15 @@ const app = express();
 app.use(cors());
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
-
+app.use(session({
+  secret: process.env.SECRET || "offering co-op position",
+  resave: false,
+  saveUninitialized: true,
+  cookie: { secure : false }, // for dev environment
+  genid: () => {
+    return uuidv4();
+  },
+}))
 /**
  * Routing
  */

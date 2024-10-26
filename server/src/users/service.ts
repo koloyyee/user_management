@@ -32,7 +32,7 @@ async function existed(oid: ObjectId) {
 
 async function findByEmail(email: string) {
 	const collection = await usersColl();
-	return await collection.findOne({ email }) as unknown as IUser;
+	return await collection.findOne({ "email": email }) as unknown as IUser;
 }
 
 async function find(oid: ObjectId) {
@@ -63,7 +63,7 @@ async function update(oid: ObjectId, doc: IUser) {
 
 async function del(oid: ObjectId) {
 	const collection = await usersColl();
-	return collection.findOneAndDelete(oid)
+	return await collection.findOneAndDelete({_id: oid})
 }
 
 export const userService = {
