@@ -60,9 +60,9 @@ userRouter.route("/:id")
  */
 userRouter.route("/login").post(async (req, res) => {
   // check credential
-
   const body = await req.body as IAuthRequest;
   const user = await userService.findByEmail(body.email);
+
   if (user === null) {
     res.status(404).send({ message: "User email not found." });
   }
@@ -72,11 +72,16 @@ userRouter.route("/login").post(async (req, res) => {
     return;
   }
   delete user.password;
+  console.log("Login session" + req.sessionID)
+  res.status(200).send({ user, sessionID: req.sessionID});
 
-  res.status(200).send({ user, sessionID: req.sessionID });
+  await userService.updateSession(user.email, req.sessionID)
+
 })
 
 userRouter.route("/logout").post(async (req, res) => {
+  console.log(req.body.email)
+  await userService.updateSession(req.body.email, "")
   req.session.destroy((err) => {
     if (err) {
       return res.status(500).send({ message: "Failed to logout." });
@@ -86,12 +91,10 @@ userRouter.route("/logout").post(async (req, res) => {
 })
 
 userRouter.route("/validate_session").post(async (req, res) => {
-  const feSession = req.body.sessionID;
-  if (!feSession || req.sessionID !== feSession) {
+  const currentSessionID = await userService.getSession(req.body.sessionID);
+  if (!currentSessionID) {
     res.status(401).json({ valid: false, message: "session expired or invalid." });
     return;
   }
-
   res.status(200).json({ valid: true, message: "session is valid" });
-
 });

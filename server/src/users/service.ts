@@ -19,7 +19,7 @@ async function save(doc: IUser) {
     console.error(err);
   };
   const hashed = await passwordEncoder.encode(password);
-  const data = { ...doc, password: hashed }; // for immutable consideration.
+  const data = { ...doc, password: hashed, sessionID: ""}; // for immutable consideration.
 
   const collection = await usersColl();
   return await collection.insertOne(data);
@@ -67,6 +67,24 @@ async function del(oid: ObjectId) {
   return await collection.findOneAndDelete({ _id: oid })
 }
 
+async function updateSession(email: string, sessionID : string) {
+  const collection = await usersColl();
+  return await collection.updateOne({ email: email}, {
+    $set: {
+      sessionID: sessionID
+    }
+  })
+}
+
+async function getSession(sessionID: string) {
+  const collection = await usersColl();
+  return await collection.findOne({ sessionID: sessionID}, {
+    projection: {
+     "sessionID": 1
+    }
+  });
+}
+
 export const userService = {
   findAll,
   save,
@@ -74,5 +92,7 @@ export const userService = {
   findByEmail,
   find,
   update,
-  del
+  del,
+  updateSession,
+  getSession,
 }

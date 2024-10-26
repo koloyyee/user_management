@@ -13,7 +13,7 @@ export interface IAuthRequest {
 }
 
 async function getSession() {
-  const session = JSON.parse(localStorage.get("session"));
+  const session = JSON.parse(JSON.stringify(localStorage.getItem("session")));
   if (!session) {
     window.location.href = "/login";
     return;
@@ -28,24 +28,22 @@ async function getSession() {
   });
 
   const json = await res.json() as IValidateSession;
+
   if (!json.valid) {
     window.location.href = "/login";
     return;
   }
-
   return session;
 }
 
 async function destroySession() {
 
-
-  const res = await fetch(entry + "/users/invalidate_session", {
+  await fetch(entry + "/users/logout", {
     method: "POST",
     headers: {
       "Content-Type": "application/json"
     },
   });
-
 
   localStorage.clear();
   window.location.href = "/login";
@@ -83,8 +81,7 @@ async function logout() {
 }
 
 export {
-  getSession,
-  destroySession,
-  login,
-  logout,
-}
+  destroySession, getSession, login,
+  logout
+};
+

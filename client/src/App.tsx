@@ -16,7 +16,6 @@ export async function loader() {
 function App() {
   // checking if the current page has seession, also matches the server.
   const navigate = useNavigate();
-
   useEffect(() => {
     if (!getSession()) {
       navigate("/");
