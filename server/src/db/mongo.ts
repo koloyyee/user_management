@@ -20,7 +20,9 @@ export async function conn() {
   try {
     const conn = await client.connect();
     // Send a ping to confirm a successful connection
-    client.db("deep-code-challenge").command({ ping: 1 }) 
+    const db = client.db("deep-code-challenge");
+    await db.collection(COLL.users).createIndex({ email: 1}, {unique: true})
+
     return conn.db("deep-code-challenge");
   } catch (e) {
     console.error(e);

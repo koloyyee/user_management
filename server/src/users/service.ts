@@ -10,10 +10,14 @@ import { userValidate } from "../utils/validation";
 
 async function findAll() {
   const collection = await usersColl();
-  return await collection.find({}).toArray();
+  return await collection.find({}, {projection: {"password" : 0}}).toArray();
 }
 
 async function save(doc: IUser) {
+  if(await emailExist(doc.email)) {
+    return;
+  };
+
   const { password, err } = userValidate.password(doc.password);
   if (err !== null) {
     console.error(err);
@@ -23,6 +27,12 @@ async function save(doc: IUser) {
 
   const collection = await usersColl();
   return await collection.insertOne(data);
+}
+
+
+async function emailExist (email : string) {
+  const collection = await usersColl();
+  return await collection.findOne({ email}) !== null;
 }
 
 async function existed(oid: ObjectId) {

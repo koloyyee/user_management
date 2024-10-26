@@ -12,24 +12,9 @@ export interface IAuthRequest {
   password: string;
 }
 
-async function getSession() {
+async function getSession(): Promise<string| undefined> {
   const session = JSON.parse(JSON.stringify(localStorage.getItem("session")));
   if (!session) {
-    window.location.href = "/login";
-    return;
-  }
-
-  const res = await fetch(entry + "/users/validate_session", {
-    method: "POST",
-    headers: {
-      "Content-Type": "application/json"
-    },
-    body: JSON.stringify({ sessionID: session }),
-  });
-
-  const json = await res.json() as IValidateSession;
-
-  if (!json.valid) {
     window.location.href = "/login";
     return;
   }
@@ -50,9 +35,7 @@ async function destroySession() {
 }
 
 
-async function login(authReq: any) {
-  // if (authReq === null) return;
-
+async function login(authReq: IAuthRequest) {
   try {
     const res = await fetch(entry + "/users/login", {
       method: "POST",
@@ -65,7 +48,7 @@ async function login(authReq: any) {
     const json = await res.json();
     if (json.sessionID) {
       localStorage.setItem("session", json.sessionID);
-      localStorage.setItem("user", json.user);
+      localStorage.setItem("user", JSON.stringify(json.user));
 
       return { user: json.user, err: null };
     }

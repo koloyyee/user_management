@@ -1,4 +1,5 @@
 import { NextFunction, Request, Response } from "express";
+import { userService } from "../users/service";
 
 /**
  * Validating request body.
@@ -43,19 +44,24 @@ export const userValidate = {
 
 
 export function checkSession(req: Request, res: Response, next: NextFunction) {
-  console.log("path: " + req.path)
   const whitelist = ["/login", "/logout", "/validate_session", "/invalidate_session"];
-
-  console.log("checkSession: " + req.sessionID)
   if (whitelist.some(path => path === req.path)) {
     next();
   }
-  //  the authorization made with "Bearer xxxxxxx", split by " " and extract the session Id.
+
   const session = req.headers.authorization?.split(" ")[1];
-  if (req.sessionID === session) {
-    console.log(req.headers.authorization);
-    next();
-  } else {
-    res.status(401).send({ message: "Please login again." })
-  }
+  if (!session) return;
+  userService.getSession(session)
+    .then(res => res?.sessionID)
+    .then(storedSession => {
+      console.log("stored: " + storedSession);
+      console.log("out: " + session);
+      if (storedSession === session) {
+        next();
+      } else {
+        res.status(401).send({ message: "Please login again." })
+      }
+
+    })
+  //  the authorization made with "Bearer xxxxxxx", split by " " and extract the session Id.
 }
