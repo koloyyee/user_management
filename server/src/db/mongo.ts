@@ -1,6 +1,6 @@
 
 import { MongoClient, ServerApiVersion } from "mongodb";
-import { COLL } from "../constants";
+import { COLL } from "../utils/constants";
 
 const uri = process.env.ATLAS || "missing";
 

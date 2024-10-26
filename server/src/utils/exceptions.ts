@@ -1,6 +1,6 @@
 
 export class UserCRUDException extends Error { 
-	constructor(method: string, msg: string) {
-		super(method + msg);
+	constructor(msg: string) {
+		super(msg);
 	}
 }

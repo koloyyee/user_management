@@ -1,6 +1,7 @@
 import express from "express";
 import { ObjectId } from "mongodb";
-import { conn, usersColl } from "../db/mongo";
+import { conn } from "../db/mongo";
+import { passwordEncoder } from "../utils/password-encoder";
 import { userService } from "./service";
 
 
@@ -15,16 +16,28 @@ userRouter.route("/")
 	})
 	// create user
 	.post(async (req, res) => {
-		const collection = await usersColl();
-		const doc = req.body;
-		const result = await collection.insertOne(doc);
-		// const result = await userService.save(req.body);
+		const doc = req.body as IUser;
+		const result = await userService.save(doc);
 		res.status(200).send({ message: "received", result });
 	})
 
-userRouter.route("/login").post(async( _req, _res) => {
+	interface IAuthRequest {
+		password: string;
+		email: string;
+	}
+userRouter.route("/login").post(async( req, res) => {
 	// check credential
-	// create JWT or session
+	const body = await req.body as IAuthRequest;
+	const user = await userService.findByEmail(body.email);
+	if (user === null ) {
+		res.status(404).send({message: "User email not found."});
+	}
+	const verified = await passwordEncoder.verify(body.password, user?.password ?? "");
+	if( !verified) {
+		res.status(401).send({message: "Password or Email is incorrect."});
+		return;
+	}
+	res.status(200).json({ message: "success"});
 })
 userRouter.route("/logout").post(async( _req, _res) => {
 	// clear session?
