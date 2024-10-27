@@ -1,13 +1,14 @@
 import { del, get, post, put } from "./fetch";
 
 async function save(newUser: FormData) {
-	console.log(Object.fromEntries(newUser));
-	const keys = ["email", "firstName", "lastName", "password"];
+	
+	// basic checks for empty or null, and make sure have the correct keys.
+	const keys = ["email", "firstName", "lastName", "password", "role"];
 	const keysValid = keys.every(key => newUser.has(key))
 	const valuesValid = keys.every(key => newUser.get(key) !== null || newUser.get(key) !== "");
 	if (!valuesValid || !keysValid) return;
 
-	newUser.append("role", "user");
+	newUser.append("role", "regular_user");
 
 	const res = await post("/users", Object.fromEntries(newUser));
 	return await res.json();
@@ -33,7 +34,8 @@ async function delByOid(oid: string) {
 
 async function update(user: FormData) {
 
-	const keys = ["_id", "email", "firstName", "lastName", "password"];
+	// basic checks for empty or null, and make sure have the correct keys.
+	const keys = ["_id", "email", "firstName", "lastName", "password", "role"];
 	const keysValid = keys.every(key => user.has(key))
 	const valuesValid = keys.every(key => user.get(key) !== null || user.get(key) !== "");
 

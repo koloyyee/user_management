@@ -16,11 +16,14 @@ export async function loader() {
 }
 
 function App() {
-  // checking if the current page has seession, also matches the server.
+
   const navigate = useNavigate();
   const [isLoading, setLoading] = useState<boolean>(true);
   const session = useLoaderData() as string | undefined;
 
+  /**
+   * It checks if the local session is valid or exist, if not redirect to "/".
+   */
   useEffect(() => {
     if (!session) {
       navigate("/");
@@ -34,8 +37,9 @@ function App() {
       (async () => {
         setLoading(true);
         try {
-          const { users } = await findAll() as { users : IUser[] };
-          console.log(users);
+          const { users } = await findAll() as { users: IUser[] };
+
+          // showing list of users from the db exclude current user.
           const excludeSelf = users.filter(u => u.email !== user.email);
           console.log(excludeSelf)
           setUsers(excludeSelf)
@@ -52,8 +56,14 @@ function App() {
 
   return (
     <>
-      <h1> Welcome back! {user.firstName + " " + user.lastName} </h1>
-      <button type="button" onClick={() => navigate("/users/create")} >✚</button>
+      {user.role === "regular_user" ?
+        <h1> Welcome back! {user.firstName + " " + user.lastName} </h1>
+        :
+        <>
+          <h4>Create New User</h4>
+          <button type="button" onClick={() => navigate("/users/create")} >✚</button>
+        </>
+      }
       {isLoading ?
         <h3 className='loading spin'> Loading </h3>
         :
@@ -75,7 +85,7 @@ function App() {
                   <td > {u.email}</td>
                   <td> {u.firstName}</td>
                   <td> {u.lastName}</td>
-                  <td> {u.role}</td>
+                  <td> {u.role === "regular_user" ? "User" : "Admin"}</td>
                   <td> <a href={"/users/" + u._id}> 🖊️</a></td>
                 </tr>
               ))}

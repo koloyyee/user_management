@@ -9,7 +9,7 @@ import { userRouter } from "./users/controller";
 // get env variables
 dotenv.config();
 
-const app = express();
+export const app = express();
 
 /**
  * middlewares 

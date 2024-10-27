@@ -17,7 +17,7 @@ export function FormBody({ user = null }: { user: IUser | null }) {
 		if (window.confirm("Are you sure you want to delete this user?")) {
 			const res = await delByOid(oid)
 			console.log(res)
-			if(res.result.acknowledged) {
+			if (res.result.acknowledged) {
 				return redirect("/");
 			} else {
 				console.error(res.message);
@@ -50,6 +50,13 @@ export function FormBody({ user = null }: { user: IUser | null }) {
 					<label htmlFor="lastName"> Last Name </label>
 					<input defaultValue={user?.lastName} type="text" id="lastName" name="lastName" disabled={!edit} />
 				</div>
+				<div className="form-row">
+					<label htmlFor="role"> User Role</label>
+					<select name="role" id="role" defaultValue={user?.role}>
+						<option value="regular_user"> Regular User </option>
+						<option value="admin"> Admin </option>
+					</select>
+				</div>
 				{isUpdate ?
 					<div className="form-row">
 						<input defaultValue={user?._id} id="email" type="hidden" name="_id" />
@@ -58,7 +65,7 @@ export function FormBody({ user = null }: { user: IUser | null }) {
 					:
 					<div className="form-row">
 						<label htmlFor="password"> Password </label>
-						<input defaultValue={user?.password} type="password" id="password" name="password" disabled={!edit} />
+						<input defaultValue={user?.password} minLength={8} type="password" id="password" name="password" disabled={!edit} />
 					</div>
 				}
 

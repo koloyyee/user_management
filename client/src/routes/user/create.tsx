@@ -5,6 +5,7 @@ import { FormBody } from "./form-body";
 
 export async function action({ request }: { request: Request }) {
 	const formData = await request.formData();
+	console.log(Object.fromEntries(formData))
 	// create
 	const res = await save(formData);
 	console.log(res);

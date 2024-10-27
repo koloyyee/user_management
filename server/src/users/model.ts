@@ -7,7 +7,7 @@ interface IUser {
   firstName: string;
   lastName: string;
   password?: string;
-  role?: "user" | "admin"
+  role?: "regular_user" | "admin"
 };
 
 
