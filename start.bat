@@ -1,89 +1,55 @@
 @echo off
-setlocal
+setlocal EnableDelayedExpansion
 
-REM Set environment variables
-set NODE_ENV=development
-set PORT=3000
-set VITE_BACKEND_API=http://localhost:3000/api
+:: Store the root directory
+set "ROOT_DIR=%cd%"
 
-REM Function to create .env file for client
-:CREATE_CLIENT_ENV
-echo VITE_BACKEND_API=http://localhost:3000/api > .env
-echo .env file created for client.
-goto :EOF
+:: Create server .env file
+echo Creating server .env file...
+(
+echo ATLAS="mongodb+srv://deep-code-challenge:ilcVEurQdwfqdLbp@cluster0.qg2td.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0"
+echo FRONTEND_URL=http://localhost:5173
+echo FRONTEND_URL_PROD=http://localhost:
+echo PORT=3000
+echo SECRET=deep-code-challenge
+) > "%ROOT_DIR%\server\.env"
+echo Server .env file created
 
-REM Function to create .env file for server
-:CREATE_SERVER_ENV
-echo NODE_ENV=development > .env
-echo PORT=3000 >> .env
-echo .env file created for server.
-goto :EOF
+:: Create client .env file
+echo Creating client .env file...
+(
+echo NODE_ENV=development
+echo VITE_BACKEND_API=http://localhost:3000/api
+) > "%ROOT_DIR%\client\.env"
+echo Client .env file created
 
-REM Check if pnpm is installed
+:: Check for pnpm
 where pnpm >nul 2>nul
 if %ERRORLEVEL% EQU 0 (
-    echo pnpm found
-    set USE_PNPM=1
+    set "PACKAGE_MANAGER=pnpm"
 ) else (
-    echo pnpm not found, using npm
-    set USE_PNPM=0
+    set "PACKAGE_MANAGER=npm"
 )
+echo Using %PACKAGE_MANAGER% as package manager
 
-REM Change to server directory
-cd server
+:: Start server
+echo Starting server...
+cd "%ROOT_DIR%\server"
+call %PACKAGE_MANAGER% install
+start cmd /k "cd /d "%ROOT_DIR%\server" && %PACKAGE_MANAGER% run dev"
 
-REM Create .env file in server if it doesn't exist
-if not exist .env call :CREATE_SERVER_ENV
+:: Start client
+echo Starting client...
+cd "%ROOT_DIR%\client"
+call %PACKAGE_MANAGER% install
+start cmd /k "cd /d "%ROOT_DIR%\client" && %PACKAGE_MANAGER% run dev"
 
-REM Install npm packages and run tests
-if %USE_PNPM% EQU 1 (
-    pnpm install
-    pnpm run test
-) else (
-    npm install
-    npm run test
-)
+:: Return to root directory
+cd "%ROOT_DIR%"
 
-REM Check if tests passed
-if %ERRORLEVEL% NEQ 0 (
-    echo Tests failed. Exiting.
-    exit /b 1
-)
+echo Both client and server are starting...
+echo Server running on http://localhost:3000
+echo Client running on http://localhost:5173
 
-REM Start server in dev mode
-if %USE_PNPM% EQU 1 (
-    start pnpm run dev
-) else (
-    start npm run dev
-)
-
-REM Change to client directory
-cd ../client
-
-REM Create .env file in client if it doesn't exist
-if not exist .env call :CREATE_CLIENT_ENV
-
-REM Install npm packages and run tests
-if %USE_PNPM% EQU 1 (
-    pnpm install
-    pnpm run test
-) else (
-    npm install
-    npm run test
-)
-
-REM Check if tests passed
-if %ERRORLEVEL% NEQ 0 (
-    echo Tests failed. Exiting.
-    exit /b 1
-)
-
-REM Start client in dev mode
-if %USE_PNPM% EQU 1 (
-    start pnpm run dev
-) else (
-    start npm run dev
-)
-
-REM Wait for user input to keep the command prompt open
+:: Keep the window open
 pause

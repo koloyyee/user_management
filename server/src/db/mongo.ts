@@ -16,7 +16,10 @@ export async function conn() {
       version: ServerApiVersion.v1,
       strict: true,
       deprecationErrors: true,
-    }
+    
+    },
+    ssl: true,
+    tls: true,
   });
   try {
     const conn = await client.connect();
