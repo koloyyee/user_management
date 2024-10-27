@@ -181,7 +181,7 @@ The backend is developed with ExpressJS for fast development and CORS support. I
 
 ### Database
 
-The application uses MongoDB Atlas for storing user details, including roles ("admin" or "regular user"). Appropriate validation is provided when adding or editing user details.
+The application uses MongoDB Atlas for storing user details, including roles ("admin" or "regular user"). Appropriate validation is provided when adding or editing user details. As suggested in the requirement MongoDB is allowed to use therefore a cloud support Atlas collection was created for this challenge for storing and retrieving user data.
 
 ## Code Quality
 
@@ -194,9 +194,6 @@ The code is structured to be readable and maintainable. Automated installation a
 - Brief explanation of the design choices made during development.
 - Description of any AI tools used, including prompts and modifications made.
 
-#### Database
-
-As suggested in the requirement MongoDB is allowed to use therefore a cloud support Atlas collection was created for this challenge for storing and retrieving user data.
 
 ### Technology
 
