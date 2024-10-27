@@ -100,6 +100,7 @@ npm run dev
 ```
 
 ### Windows
+NOTE: Windows has an error with npm installing bcrypt and/or nodemon, current is not working and I am finding ways to fix it, I highly recommend running this program in WSL2, links in the Windows section.
 
 #### if the scripting failed here is the manual process
 
