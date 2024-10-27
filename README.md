@@ -2,9 +2,9 @@
 
 ### Abstract
 
-This is a code challenge for the co-op position posted on HireAC, the goal is to create a simple User Management System support CRUD between frontend and backend with persistent storage or in-memory with basic testing.
+This is a code challenge for the co-op position posted on HireAC, the goal is to create a simple User Management System that supports CRUD between frontend and backend with persistent storage or in-memory with basic testing.
 
-The goal is to deliver a prototype in short a period of time with a JavaScript based technology stack, for familiarity I have decided to use the "Client-Server" architecture, the frontend technology with ReactJS, backend driven by ExpressJS, with TypeScript and using Vite as build tool, persistent storage with MongoDB Atlas.
+The goal is to deliver a prototype in a short time with a JavaScript based technology stack, for familiarity I have decided to use the "Client-Server" architecture, the frontend technology with ReactJS, backend driven by ExpressJS, with TypeScript and Vite as build tool, persistent storage with MongoDB Atlas.
 
 For more details in design details go to [Design Detail](#design)
 
@@ -101,17 +101,17 @@ npm run dev
 ### Windows
 NOTE: Windows has an error with npm installing bcrypt and/or nodemon, current is not working and I am finding ways to fix it, I highly recommend running this program in [WSL2](https://learn.microsoft.com/en-us/windows/wsl/install)
 
-#### if the scripting failed here is the manual process
+#### If the scripting failed here is the manual process
 
 `cd client`
 
-#### create the `.env` file and open with text editor (e.g: VS Code / (Neo)Vim / Emacs), and add the followings
+#### Create the `.env` file and open it with a text editor (e.g: VS Code / (Neo)Vim / Emacs), and add the following
 
 ```
 VITE_BACKEND_API="http://localhost:3000/api"
 ```
 
-#### use pnpm if you have
+#### Use pnpm if you have
 
 `pnpm run dev`
 
@@ -140,14 +140,12 @@ SECRET="deep-code-challenge"
 #### use pnpm if you have
 
 ```pnpm
-pnpm run test
 pnpm run dev
 ```
 
 #### or npm
 
 ```npm
-npm run test
 npm run dev
 ```
 ---
@@ -177,11 +175,11 @@ The frontend is built using ReactJS with TypeScript for type inference and safet
 
 ### Backend
 
-The backend is developed with ExpressJS for fast development and CORS support. It connects to MongoDB Atlas with readWrite access to a specific collection for security reasons. Create and update operations validate password, email, first name, and last name before storing them in MongoDB. Jest and supertest are used for testing.
+The backend is developed with ExpressJS for fast development and CORS support. It connects to MongoDB Atlas with readWrite access to a specific collection for security reasons. Create and update operations and validate the password, email, first name, and last name before storing them in MongoDB. Jest and supertest are used for testing.
 
 ### Database
 
-The application uses MongoDB Atlas for storing user details, including roles ("admin" or "regular user"). Appropriate validation is provided when adding or editing user details. As suggested in the requirement MongoDB is allowed to use therefore a cloud support Atlas collection was created for this challenge for storing and retrieving user data.
+The application uses MongoDB Atlas for storing user details, including roles ("admin" or "regular user"). Appropriate validation is provided when adding or editing user details. As suggested in the requirement MongoDB is allowed to be used therefore a cloud support Atlas collection was created for this challenge for storing and retrieving user data.
 
 ## Code Quality
 
@@ -199,8 +197,8 @@ The code is structured to be readable and maintainable. Automated installation a
 
 ReactJS, ExpressJS, MongoDB, Jest
 
-## AI assitance claims
+## AI assistance claims
 
 GitHub: co-pilot **ONLY limited** to co-pilot **Chat**, for reference, syntax checking, documentation, bash script and window bat scripts
 
-Claude: ExpressJS and Mongo reference and syntax checking, Claude responsible for creating the .bat script.
+Claude: ExpressJS and Mongo reference and syntax checking, Claude is responsible for creating the .bat script.
