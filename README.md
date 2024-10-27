@@ -206,4 +206,4 @@ ReactJS, ExpressJS, MongoDB, Jest
 
 GitHub: co-pilot **ONLY limited** to co-pilot **Chat**, for reference, syntax checking, documentation, bash script and window bat scripts
 
-Claude: ExpressJS and Mongo reference and syntax checking
+Claude: ExpressJS and Mongo reference and syntax checking, Claude responsible for creating the .bat script.
