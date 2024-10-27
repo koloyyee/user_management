@@ -5,11 +5,9 @@ import { FormBody } from "./form-body";
 
 export async function action({ request }: { request: Request }) {
 	const formData = await request.formData();
-	console.log(Object.fromEntries(formData))
 	// create
 	const res = await save(formData);
-	console.log(res);
-	if( res.result.acknowledged) {
+	if( res.result  && res.result.acknowledged) {
 		return redirect("/");
 	} else {
 		console.error(res.message);

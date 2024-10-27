@@ -19,7 +19,6 @@ export async function get(api: string) {
 
 export async function post<T>(api: string, body: T) {
 
-console.log(body);
   const session = await getSession();
   return await fetch(entry + api, {
     method: "POST",

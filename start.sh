@@ -34,9 +34,9 @@ function check_pnpm {
 cd server
 # create .env file in server
 	if [! -f .env ]; then
-			create_client_env
+			create_server_env
 		else
-			echo ".env already existed"
+			echo ".env already in server dir existed"
 	fi 
 # install npm package and run in dev mode
 if check_pnpm; then
@@ -52,7 +52,7 @@ cd ../client
 if [! -f .env ]; then
 		create_client_env
 	else
-		echo ".env already existed"
+		echo ".env already in client dir existed"
 fi
 if check_pnpm; then
   pnpm install
@@ -61,5 +61,6 @@ else
   npm install
   npm run dev &
 fi
+
 # "wait" and "&" make both client and server "run dev" run in parallel
 wait

@@ -5,7 +5,7 @@ async function save(newUser: FormData) {
 	// basic checks for empty or null, and make sure have the correct keys.
 	const keys = ["email", "firstName", "lastName", "password", "role"];
 	const keysValid = keys.every(key => newUser.has(key))
-	const valuesValid = keys.every(key => newUser.get(key) !== null || newUser.get(key) !== "");
+	const valuesValid = keys.every(key => newUser.get(key) !== null && newUser.get(key) !== "");
 	if (!valuesValid || !keysValid) return;
 
 	newUser.append("role", "regular_user");
@@ -37,14 +37,15 @@ async function update(user: FormData) {
 	// basic checks for empty or null, and make sure have the correct keys.
 	const keys = ["_id", "email", "firstName", "lastName", "password", "role"];
 	const keysValid = keys.every(key => user.has(key))
-	const valuesValid = keys.every(key => user.get(key) !== null || user.get(key) !== "");
+	const valuesValid = keys.every(key => user.get(key) !== null && user.get(key) !== "");
 
 	if (!valuesValid || !keysValid) return;
 
 	const _id = user.get("_id");
-
-	const res = await put("/users/" + _id, user);
+	console.log(Object.fromEntries(user))
+	const res = await put("/users/" + _id, Object.fromEntries(user));
 	const data = await res.json();
+	console.log(data)
 	return data;
 }
 

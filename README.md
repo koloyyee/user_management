@@ -35,8 +35,6 @@ start.bat
 
 #### if the scripting failed here is the manual process
 
-()
-
 this allow permission to run the bash script file, check the if .env file exist, install package in pnpm or npm, test and run the application.
 
 #### if the scripting failed here is the manual process
@@ -61,14 +59,12 @@ VITE_BACKEND_API="http://localhost:3000/api"
 #### use pnpm if you have
 
 ```pnpm
-pnpm run test
 pnpm run dev
 ```
 
 #### or npm
 
 ```npm
-npm run test
 npm run dev
 ```
 
@@ -85,8 +81,9 @@ touch .env
 ATLAS="mongodb+srv://deep-code-challenge:ilcVEurQdwfqdLbp@cluster0.qg2td.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0"
 FRONTEND_URL="http://localhost:5173"
 FRONTEND_URL_PROD="http://localhost:5174"
-PORT=3001
+PORT=3000
 SECRET="deep-code-challenge"
+NODE_ENV=dev
 ```
 
 #### use pnpm if you have
@@ -98,8 +95,7 @@ pnpm run dev
 
 #### or npm
 
-```npm
-npm run test
+```
 npm run dev
 ```
 
@@ -117,15 +113,11 @@ VITE_BACKEND_API="http://localhost:3000/api"
 
 #### use pnpm if you have
 
-```pnpm
-pnpm run test
-pnpm run dev
-```
+`pnpm run dev`
 
 #### or npm
 
 ```npm
-npm run test
 npm run dev
 ```
 
@@ -158,6 +150,19 @@ pnpm run dev
 npm run test
 npm run dev
 ```
+---
+### Testing
+
+Testing is supported in `server/`
+
+```sh
+cd server
+pnpm run test 
+# or 
+npm run test
+```
+
+**CAVEAT!** The storing session sometimes cannot be retrieved instantly, try running the test a few times.
 
 ---
 

@@ -16,7 +16,7 @@ userRouter.route("/")
   .get(checkSession, async (_req, res) => {
     const result = await userService.findAll();
     if (!result) {
-      res.status(500).json({users: null, message: "failed to fetch users"});
+      res.status(500).json({ users: null, message: "failed to fetch users" });
       return;
     }
     res.status(200).json({ users: result });
@@ -41,30 +41,37 @@ userRouter.route("/:id")
   .get(checkSession, async (req, res) => {
     const id = await req.params.id as string;
     const oid = new ObjectId(id);
-    const result = await userService.find(oid)
-    if(!result)  {
-      res.status(500).json({result: null, message: "failed to find, verify the id"});
+    if (!id || !oid) {
+      res.status(500).send({ result: null, message: `${id} is invalid.` })
     }
-    res.status(200).json({ user: result, message: "fetch success"});
+    const result = await userService.find(oid)
+    if (!result) {
+      res.status(500).json({ result: null, message: "failed to find, verify the id" });
+    }
+    res.status(200).json({ user: result, message: "fetch success" });
   })
   .put(checkSession, async (req, res) => {
+
     const oid = new ObjectId(req.params.id);
+    if (!req.params.id || !oid) {
+      res.status(500).json({ result: { acknowledged: false }, message: "failed to find, verify the id" });
+    }
     const result = await userService.update(oid, req.body);
     if (result === null) {
-      res.status(500).json({result, message: "failed to find, verify the id"});
+      res.status(500).json({ result: { acknowledged: false }, message: "failed to find, verify the id" });
       return;
     }
-    res.status(200).json({result, message: "update success"});
+    res.status(200).json({ result: { acknowledged: true }, message: "update success" });
   })
   .delete(checkSession, async (req, res) => {
     const oid = new ObjectId(req.params.id);
     console.log(oid)
     const result = await userService.del(oid);
     if (result === null) {
-      res.status(500).json({result: {acknowledge : false }, message: "failed to find, verify the id"});
+      res.status(500).json({ result: { acknowledged: false }, message: "failed to find, verify the id" });
       return;
     }
-    res.status(200).json({result: {acknowledge : true}, message: "delete success"});
+    res.status(200).json({ result: { acknowledged: true }, message: "delete success" });
   })
 
 

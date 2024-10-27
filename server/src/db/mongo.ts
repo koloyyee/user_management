@@ -3,6 +3,7 @@ import { MongoClient, ServerApiVersion } from "mongodb";
 import { COLL } from "../utils/constants";
 
 const uri = process.env.ATLAS || "missing";
+// const coll = process.env.NODE_ENV !== "dev" ? COLL.testing: COLL.users
 
 /**
  * Main entry for MongoDB connection.
@@ -21,7 +22,7 @@ export async function conn() {
     const conn = await client.connect();
     // Send a ping to confirm a successful connection
     const db = client.db("deep-code-challenge");
-    await db.collection(COLL.users).createIndex({ email: 1}, {unique: true})
+    await db.collection(COLL.users).createIndex({ email: 1 }, { unique: true })
 
     return conn.db("deep-code-challenge");
   } catch (e) {

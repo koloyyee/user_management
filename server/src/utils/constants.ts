@@ -4,4 +4,5 @@
  */
 export const COLL = Object.freeze({
 	users: "users",
+	testing: "users_testing",
 });
