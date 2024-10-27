@@ -2,7 +2,7 @@ import { useEffect, useState } from 'react';
 import { useLoaderData, useNavigate } from 'react-router-dom';
 import { getSession } from './api/auth';
 import { findAll } from './api/user';
-import './App.css';
+import "./App.css";
 import { IUser } from './model/user';
 
 export async function action() {
@@ -31,14 +31,20 @@ function App() {
   const [users, setUsers] = useState<IUser[]>([]);
   useEffect(() => {
     if (user.role === "admin") {
-      setLoading(true);
-      findAll()
-        .then(data => {
-          const excludeSelf = data.users.filter(u => u.email !== user.email);
+      (async () => {
+        setLoading(true);
+        try {
+          const { users } = await findAll() as { users : IUser[] };
+          console.log(users);
+          const excludeSelf = users.filter(u => u.email !== user.email);
+          console.log(excludeSelf)
           setUsers(excludeSelf)
+        } catch (e) {
+          console.error(e);
+        } finally {
           setLoading(false)
-        })
-        .catch(err => console.error(err));
+        }
+      })();
     }
   }, [user.role])
 
@@ -47,9 +53,10 @@ function App() {
   return (
     <>
       <h1> Welcome back! {user.firstName + " " + user.lastName} </h1>
-      <button type="button" onClick={()=> navigate("/users/create")} >✚</button>
+      <button type="button" onClick={() => navigate("/users/create")} >✚</button>
       {isLoading ?
-        "Loading" :
+        <h3 className='loading spin'> Loading </h3>
+        :
         <div>
           <p>Total users: {users.length}</p>
           <table>
@@ -58,6 +65,7 @@ function App() {
                 <td>User email</td>
                 <td> User First Name </td>
                 <td> User Last Name  </td>
+                <td> User Role </td>
                 <td> Edit User </td>
               </tr>
             </thead>
@@ -67,6 +75,7 @@ function App() {
                   <td > {u.email}</td>
                   <td> {u.firstName}</td>
                   <td> {u.lastName}</td>
+                  <td> {u.role}</td>
                   <td> <a href={"/users/" + u._id}> 🖊️</a></td>
                 </tr>
               ))}

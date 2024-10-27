@@ -22,9 +22,10 @@ userRouter.route("/")
     res.status(200).json({ users: result });
   })
   // create user
-  .post(async (req, res) => {
-    const doc = req.body as IUser;
+  .post(checkSession, async (req, res) => {
+    const doc = await req.body as IUser;
     const result = await userService.save(doc);
+
     if (!result) {
       res.status(500).json({ message: "failed to save", result: null });
       return;
@@ -60,10 +61,10 @@ userRouter.route("/:id")
     console.log(oid)
     const result = await userService.del(oid);
     if (result === null) {
-      res.status(500).json({result: null, message: "failed to find, verify the id"});
+      res.status(500).json({result: {acknowledge : false }, message: "failed to find, verify the id"});
       return;
     }
-    res.status(200).json({result: result, message: "delete success"});
+    res.status(200).json({result: {acknowledge : true}, message: "delete success"});
   })
 
 
@@ -91,6 +92,9 @@ userRouter.route("/login").post(async (req, res) => {
 
 })
 
+/**
+ * logout acts as invalidating session by removing session.
+ */
 userRouter.route("/logout").post(async (req, res) => {
   await userService.updateSession(req.body.email, "")
   req.session.destroy((err) => {

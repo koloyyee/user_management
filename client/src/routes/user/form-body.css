@@ -1,0 +1,14 @@
+.form-row{
+	gap: 3rem;
+	margin-bottom: 0.5rem;
+	display: flex; 
+	justify-content: space-between;
+	width: 100%;
+	/* align-self: flex-start; */
+}
+
+.form-btn {
+	margin-block: 1.8rem;
+	margin-left: 1.5rem;
+	margin-right: 1.5rem;
+}

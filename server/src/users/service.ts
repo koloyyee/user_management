@@ -10,29 +10,32 @@ import { userValidate } from "../utils/validation";
 
 async function findAll() {
   const collection = await usersColl();
-  return await collection.find({}, {projection: {"password" : 0}}).toArray();
+  return await collection.find({}, { projection: { "password": 0 } }).toArray();
 }
 
 async function save(doc: IUser) {
-  if(await emailExist(doc.email)) {
+
+  if (await emailExist(doc.email)) {
+    console.error("Email already taken.")
     return;
   };
 
   const { password, err } = userValidate.password(doc.password);
   if (err !== null) {
     console.error(err);
+    return;
   };
   const hashed = await passwordEncoder.encode(password);
-  const data = { ...doc, password: hashed, sessionID: ""}; // for immutable consideration.
+  const data = { ...doc, password: hashed, sessionID: "" }; // for immutable consideration.
 
   const collection = await usersColl();
   return await collection.insertOne(data);
 }
 
 
-async function emailExist (email : string) {
+async function emailExist(email: string) {
   const collection = await usersColl();
-  return await collection.findOne({ email}) !== null;
+  return await collection.findOne({ email }) !== null;
 }
 
 async function existed(oid: ObjectId) {
@@ -77,9 +80,9 @@ async function del(oid: ObjectId) {
   return await collection.findOneAndDelete({ _id: oid })
 }
 
-async function updateSession(email: string, sessionID : string) {
+async function updateSession(email: string, sessionID: string) {
   const collection = await usersColl();
-  return await collection.updateOne({ email: email}, {
+  return await collection.updateOne({ email: email }, {
     $set: {
       sessionID: sessionID
     }
@@ -88,9 +91,9 @@ async function updateSession(email: string, sessionID : string) {
 
 async function getSession(sessionID: string) {
   const collection = await usersColl();
-  return await collection.findOne({ sessionID: sessionID}, {
+  return await collection.findOne({ sessionID: sessionID }, {
     projection: {
-     "sessionID": 1
+      "sessionID": 1
     }
   });
 }
