@@ -33,7 +33,7 @@ function check_pnpm {
 
 cd server
 # create .env file in server
-	if [! -f .env ]; then
+	if [ ! -f .env ]; then
 			create_server_env
 		else
 			echo ".env already in server dir existed"
@@ -49,7 +49,7 @@ fi
 
 cd ../client
 # create .env file in client
-if [! -f .env ]; then
+if [ ! -f .env ]; then
 		create_client_env
 	else
 		echo ".env already in client dir existed"
