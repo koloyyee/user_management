@@ -37,7 +37,6 @@ start.bat
 
 this allow permission to run the bash script file, check the if .env file exist, install package in pnpm or npm, test and run the application.
 
-#### if the scripting failed here is the manual process
 
 [Unix manual setup](#unix)
 [Windows manual setup](#windows)
@@ -100,7 +99,7 @@ npm run dev
 ```
 
 ### Windows
-NOTE: Windows has an error with npm installing bcrypt and/or nodemon, current is not working and I am finding ways to fix it, I highly recommend running this program in WSL2, links in the Windows section.
+NOTE: Windows has an error with npm installing bcrypt and/or nodemon, current is not working and I am finding ways to fix it, I highly recommend running this program in [WSL2](https://learn.microsoft.com/en-us/windows/wsl/install)
 
 #### if the scripting failed here is the manual process
 
