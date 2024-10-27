@@ -2,7 +2,7 @@
 
 ### Abstract
 
-This is a code challenge for the co-op position posted on HireAC, the goal is to create a simple User Management System support CRUD between frontend and backend with persistent storage or in-memory.
+This is a code challenge for the co-op position posted on HireAC, the goal is to create a simple User Management System support CRUD between frontend and backend with persistent storage or in-memory with basic testing.
 
 The goal is to deliver a prototype in short a period of time with a JavaScript based technology stack, for familiarity I have decided to use the "Client-Server" architecture, the frontend technology with ReactJS, backend driven by ExpressJS, with TypeScript and using Vite as build tool, persistent storage with MongoDB Atlas.
 
@@ -162,7 +162,10 @@ pnpm run test
 npm run test
 ```
 
-**CAVEAT!** The storing session sometimes cannot be retrieved instantly, try running the test a few times.
+**CAVEAT!** 
+1. The storing session sometimes cannot be retrieved instantly, try running the test a few times.
+2. The MongoDB is a personal Atlas, I am exposing it for the purpose of this co-op challenge, it will be torn after the co-op period.
+
 
 ---
 
