@@ -75,7 +75,7 @@ touch .env
 #### open the `.env` file with text editor (e.g: VS Code / (Neo)Vim / Emacs), and add the followings
 
 ```
-ATLAS="mongodb+srv://deep-code-challenge:ilcVEurQdwfqdLbp@cluster0.qg2td.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0"
+ATLAS="mongodb+srv://mongodb_address"
 FRONTEND_URL="http://localhost:5173"
 FRONTEND_URL_PROD="http://localhost:5174"
 PORT=3000
