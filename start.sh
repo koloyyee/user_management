@@ -10,7 +10,7 @@ function create_client_env {
 
 function create_server_env {
 	# env variables in case no .env established.
-	echo "ATLAS=\"mongodb+srv://deep-code-challenge:ilcVEurQdwfqdLbp@cluster0.qg2td.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0\"" > .env
+	echo "ATLAS=\"mongodb_address\"" > .env
 	echo "FRONTEND_URL=http://localhost:5173" >> .env
 	echo "FRONTEND_URL_PROD=http://localhost:5174" >> .env
 	echo "PORT=3000" >> .env
