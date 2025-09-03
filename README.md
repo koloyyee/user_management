@@ -11,7 +11,7 @@ For more details in design details go to [Design Detail](#design)
 Git Clone the project.
 
 ```
-git clone https://github.com/koloyyee/deep-code-challenge.git
+git clone https://github.com/koloyyee/user_management.git
 ```
 
 `cd user_management`
