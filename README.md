@@ -1,8 +1,6 @@
-# Deep-Code Challenge
+# User Management
 
 ### Abstract
-
-This is a code challenge for the co-op position posted on HireAC, the goal is to create a simple User Management System that supports CRUD between frontend and backend with persistent storage or in-memory with basic testing.
 
 The goal is to deliver a prototype in a short time with a JavaScript based technology stack, for familiarity I have decided to use the "Client-Server" architecture, the frontend technology with ReactJS, backend driven by ExpressJS, with TypeScript and Vite as build tool, persistent storage with MongoDB Atlas.
 
@@ -16,7 +14,7 @@ Git Clone the project.
 git clone https://github.com/koloyyee/deep-code-challenge.git
 ```
 
-`cd deep-code-challenge`
+`cd user_management`
 
 ### Auto Step
 
